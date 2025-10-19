@@ -11,9 +11,28 @@ test('1. Проверка точного соответствия текста',
   //    "This text must match exactly, including punctuation! (100%)"
   // 3. Убедиться что проверка чувствительна к регистру, пробелам и знакам препинания
   // Негативные проверки
+  await expect(page.locator('#exact-text')).toBeVisible();
+  await expect(page.locator('#exact-text')).toHaveText(
+    'This text must match exactly, including punctuation! (100%)',
+  );
+  await expect(page.locator('#exact-text')).not.toHaveText(
+    'This text must match exactly. including punctuation! (100%)',
+  );
+  await expect(page.locator('#exact-text')).not.toHaveText(
+    'this text must match exactly, including punctuation! (100%)',
+  );
 });
 
 test('2. Проверка работы счетчика', async ({ page }) => {
+  await expect(page.locator('#counter')).toBeVisible();
+  await expect(page.locator('#counter')).toHaveText('0');
+  await expect(page.locator('#increment')).toBeVisible();
+  await page.locator('#increment').click();
+  await expect(page.locator('#counter')).toHaveText('1');
+  await expect(page.locator('#reset')).toBeVisible();
+  await page.locator('#reset').click();
+  await expect(page.locator('#counter')).toHaveText('0');
+
   // Задание: Проверить точное значение счетчика
   // 1. Найти элемент #counter и проверить что его текст "0"
   // 2. Нажать кнопку #increment
@@ -23,6 +42,20 @@ test('2. Проверка работы счетчика', async ({ page }) => {
 });
 
 test('3. Проверка карточки пользователя', async ({ page }) => {
+  await expect(page.locator('#username')).toBeVisible();
+  await expect(page.locator('#username')).toHaveText('user_guest');
+  await expect(page.locator('#user-email')).toBeVisible();
+  await expect(page.locator('#user-email')).toHaveText('guest@example.com');
+  await expect(page.locator('#user-status')).toBeVisible();
+  await expect(page.locator('#user-status')).toHaveText('Inactive');
+  await expect(page.locator('#activate-user')).toBeVisible();
+  await page.locator('#activate-user').click();
+  await expect(page.locator('#username')).toBeVisible();
+  await expect(page.locator('#username')).toHaveText('user_active');
+  await expect(page.locator('#user-email')).toBeVisible();
+  await expect(page.locator('#user-email')).toHaveText('active.user@example.com');
+  await expect(page.locator('#user-status')).toBeVisible();
+  await expect(page.locator('#user-status')).toHaveText('Active');
   // Задание: Проверить точные тексты в карточке пользователя
   // 1. Проверить что #username содержит "user_guest"
   // 2. Проверить что #user-email содержит "guest@example.com"
@@ -37,12 +70,25 @@ test('3. Проверка карточки пользователя', async ({ p
 test('4. Проверка форматированного текста', async ({ page }) => {
   // Задание: Проверить текст с пробелами и переносами строк
   // 1. Найти элемент #formatted-text
+  await expect(page.locator('#formatted-text')).toBeVisible();
+  await expect(page.locator('#formatted-text')).toHaveText(
+    'Text   with   extra   spaces   and\n        line\n        breaks',
+  );
   // 2. Проверить что его текст точно соответствует (включая все пробелы и переносы):
   //    "Text   with   extra   spaces   and\n        line\n        breaks"
 });
 
 test('5. Проверка динамического списка', async ({ page }) => {
   // Задание: Проверить точное содержание списка
+  await expect(page.locator('#items-list')).toBeVisible();
+  await expect(page.locator('#items-list')).toHaveText('First item\nSecond item');
+  await expect(page.locator('#add-item')).toBeVisible();
+  await page.locator('#add-item').click();
+  await expect(page.locator('#items-list')).toHaveText('First item\nSecond item\nItem 3');
+  await expect(page.locator('#clear-list')).toBeVisible();
+  await page.locator('#clear-list').click();
+  await expect(page.locator('#items-list')).toHaveText('Empty list');
+
   // 1. Найти элемент #items-list
   // 2. Проверить что он содержит точно:
   //    "First item\nSecond item" (для <ul> текст всех элементов объединяется с \n)

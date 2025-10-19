@@ -19,8 +19,8 @@ test.describe('Продвинутые CSS-селекторы', () => {
     //    - Является прямой дочерней элементом формы
     //    - Имеет класс btn и submit-btn
     //    - Не disabled
-    const submitButton = // твой код
-      await expect(submitButton).toBeEnabled();
+    const submitButton = page.locator('.submit-btn');
+    await expect(submitButton).toBeEnabled();
   });
 });
 
@@ -34,8 +34,10 @@ test.describe('Динамический контент с условиями', (
     //    - Имеет класс disabled
     //    - Содержит текст "Недоступно"
     //    - Не имеет атрибута type="submit"
-    const dynamicButton = // твой код
-      await expect(dynamicButton).toBeVisible({ timeout: 2000 });
+    const dynamicButton = page.locator('button.btn.disabled:not([type="submit"])', {
+      hasText: 'Недоступно',
+    });
+    await expect(dynamicButton).toBeVisible({ timeout: 2000 });
 
     // 2. Найти динамический товар, который:
     //    - Цена меньше 10 000 ₽

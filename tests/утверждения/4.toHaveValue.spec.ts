@@ -5,6 +5,16 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('1. Проверка начальных значений полей', async ({ page }) => {
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await expect(page.getByLabel('Имя пользователя:')).toHaveValue('Гость');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await expect(page.getByLabel('Электронная почта:')).toHaveValue('');
+  await expect(page.getByLabel('Телефон:')).toBeVisible();
+  await expect(page.getByLabel('Телефон:')).toHaveValue('+7');
+  await expect(page.getByLabel('Комментарии:')).toBeVisible();
+  await expect(page.getByLabel('Комментарии:')).toHaveValue('');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await expect(page.getByLabel('Страна:')).toHaveValue('ru');
   // Задание: Проверить начальные значения всех полей формы
   // 1. Найти поле "Имя пользователя" по лейблу и проверить значение "Гость"
   // 2. Найти поле "Электронная почта" и проверить что оно пустое
@@ -14,6 +24,27 @@ test('1. Проверка начальных значений полей', async
 });
 
 test('2. Проверка изменения значений полей', async ({ page }) => {
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await page.getByLabel('Имя пользователя:').fill('Алексей');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await page.getByLabel('Электронная почта:').fill('alex@example.com');
+  await expect(page.getByLabel('Телефон:')).toBeVisible();
+  await page.getByLabel('Телефон:').fill('+7 (123) 456-78-90');
+  await expect(page.getByLabel('Комментарии:')).toBeVisible();
+  await page.getByLabel('Комментарии:').fill('Тестовый комментарий');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await page.getByLabel('Страна:').selectOption('kz');
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await expect(page.getByLabel('Имя пользователя:')).toHaveValue('Алексей');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await expect(page.getByLabel('Электронная почта:')).toHaveValue('alex@example.com');
+  await expect(page.getByLabel('Телефон:')).toBeVisible();
+  await expect(page.getByLabel('Телефон:')).toHaveValue('+7 (123) 456-78-90');
+  await expect(page.getByLabel('Комментарии:')).toBeVisible();
+  await expect(page.getByLabel('Комментарии:')).toHaveValue('Тестовый комментарий');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await expect(page.getByLabel('Страна:')).toHaveValue('kz');
+
   // Задание: Проверить обновление значений полей
   // 1. Заполнить поле "Имя пользователя" значением "Алексей"
   // 2. Заполнить поле "Электронная почта" значением "alex@example.com"
@@ -24,6 +55,21 @@ test('2. Проверка изменения значений полей', async
 });
 
 test('3. Проверка сброса формы', async ({ page }) => {
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await page.getByLabel('Имя пользователя:').fill('Петр');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await page.getByLabel('Электронная почта:').fill('test@test.ru');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await page.getByLabel('Страна:').selectOption('by');
+  await expect(page.locator('#reset-btn')).toBeVisible();
+  await page.getByRole('button', { name: 'Сбросить' }).click();
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await expect(page.getByLabel('Имя пользователя:')).toHaveValue('Гость');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await expect(page.getByLabel('Электронная почта:')).toHaveValue('');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await expect(page.getByLabel('Страна:')).toHaveValue('ru');
+
   // Задание: Проверить сброс значений формы к начальным
   // 1. Изменить поле "Имя пользователя" на "Петр"
   // 2. Изменить поле "Электронная почта" на "test@test.ru"
@@ -36,6 +82,17 @@ test('3. Проверка сброса формы', async ({ page }) => {
 });
 
 test('4. Проверка обновления данных', async ({ page }) => {
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await page.getByLabel('Имя пользователя:').fill('Мария');
+  await expect(page.getByLabel('Электронная почта:')).toBeVisible();
+  await page.getByLabel('Электронная почта:').fill('maria@mail.ru');
+  await expect(page.getByLabel('Комментарии:')).toBeVisible();
+  await page.getByLabel('Комментарии:').fill('Важный комментарий');
+  await expect(page.getByRole('button', { name: 'Обновить данные' })).toBeVisible();
+  await page.getByRole('button', { name: 'Обновить данные' }).click();
+  await expect(page.getByLabel('Имя пользователя:')).toHaveValue('Мария');
+  await expect(page.getByLabel('Электронная почта:')).toHaveValue('maria@mail.ru');
+  await expect(page.getByLabel('Комментарии:')).toHaveValue('Важный комментарий');
   // Задание: Проверить отображение введенных данных
   // 1. Заполнить поле "Имя пользователя" значением "Мария"
   // 2. Заполнить поле "Электронная почта" значением "maria@mail.ru"
@@ -45,6 +102,13 @@ test('4. Проверка обновления данных', async ({ page }) =
 });
 
 test('5. Проверка пустых значений', async ({ page }) => {
+  await expect(page.getByLabel('Имя пользователя:')).toBeVisible();
+  await page.getByLabel('Имя пользователя:').fill('');
+  await expect(page.getByLabel('Телефон:')).toBeVisible();
+  await page.getByLabel('Телефон:').fill('');
+  await expect(page.getByLabel('Страна:')).toBeVisible();
+  await page.getByLabel('Страна:').selectOption('');
+  await expect(page.getByLabel('Электронная почта:')).toHaveValue('');
   // Задание: Проверить обработку пустых значений
   // 1. Очистить поле "Имя пользователя"
   // 2. Очистить поле "Телефон"

@@ -5,6 +5,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('1. Проверка статического текста', async ({ page }) => {
+  await expect(page.locator('#static-text')).toBeVisible();
+  await expect(page.locator('#static-text')).toContainText('static text block');
+  await expect(page.locator('#static-text')).toContainText('important information');
+  await expect(page.locator('#static-text')).not.toContainText('dynamic content');
   // Задание: Проверить, что статический текстовый блок содержит определенные подстроки
   // 1. Найти элемент #static-text
   // 2. Проверить что он содержит текст "static text block"
@@ -13,6 +17,13 @@ test('1. Проверка статического текста', async ({ page 
 });
 
 test('2. Проверка динамически изменяемого текста', async ({ page }) => {
+  await expect(page.locator('#dynamic-text')).toBeVisible();
+  await expect(page.locator('#dynamic-text')).toContainText('Initial dynamic text');
+  await page.locator('#change-text').click();
+  await expect(page.locator('#dynamic-text')).toContainText('Text was changed at');
+  await expect(page.locator('#add-part')).toBeVisible();
+  await page.locator('#add-part').click();
+  await expect(page.locator('#dynamic-text')).toContainText('additional part');
   // Задание: Проверить изменение динамического текста
   // 1. Найти элемент #dynamic-text и проверить что он содержит "Initial dynamic text"
   // 2. Нажать кнопку #change-text
@@ -22,6 +33,12 @@ test('2. Проверка динамически изменяемого текс
 });
 
 test('3. Проверка списка элементов', async ({ page }) => {
+  await expect(page.locator('#item-list')).toBeVisible();
+  await expect(page.locator('#item-list')).toContainText('Item 1: Basic');
+  await expect(page.locator('#item-list')).toContainText('Intermediate');
+  await expect(page.locator('#add-item')).toBeVisible();
+  await page.locator('#add-item').click();
+  await expect(page.locator('#item-list')).toContainText('New added item');
   // Задание: Проверить содержимое списка
   // 1. Найти элемент #item-list
   // 2. Проверить что он содержит текст "Item 1: Basic"
@@ -31,6 +48,12 @@ test('3. Проверка списка элементов', async ({ page }) => 
 });
 
 test('4. Проверка скрытого/отображаемого текста', async ({ page }) => {
+  await expect(page.locator('#hidden-content')).not.toBeVisible();
+  await expect(page.locator('#toggle-text')).toBeVisible();
+  await page.locator('#toggle-text').click();
+  await expect(page.locator('#hidden-content')).toContainText('special content');
+  await expect(page.locator('#hidden-content')).toContainText('hidden but now is visible');
+
   // Задание: Проверить отображение скрытого текста
   // 1. Найти элемент #hidden-content и проверить что он не видим
   // 2. Нажать кнопку #toggle-text
@@ -39,6 +62,13 @@ test('4. Проверка скрытого/отображаемого текст
 });
 
 test('5. Проверка частичного совпадения в длинном тексте', async ({ page }) => {
+  await expect(page.locator('#partial-text')).toBeVisible();
+  await expect(page.locator('#partial-text')).toContainText('quick brown fox');
+  await expect(page.locator('#partial-text')).toContainText('lazy dog');
+  await expect(page.locator('#partial-text')).toContainText('all letters of the English alphabet');
+  await expect(page.locator('#partial-text')).not.toContainText(
+    'all letters of the Russian alphabet',
+  );
   // Задание: Проверить частичные совпадения в длинном тексте
   // 1. Найти элемент #partial-text
   // 2. Проверить что он содержит "quick brown fox"
