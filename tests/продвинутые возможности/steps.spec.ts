@@ -6,32 +6,50 @@ test.describe('Тестирование формы регистрации', () =
   });
 
   test('Проверка полного цикла регистрации', async ({ page }) => {
-    // Тест проверяет полный цикл работы с формой:
+    
     // 1. Начальное состояние
     // 2. Негативные сценарии
     // 3. Успешную регистрацию
     // 4. Проверку профиля
     // 5. Выход из системы
+    
 
+    test.step('Проверить начальное состояние формы:', async ()=>{
+      await expect(page.locator('#username')).toHaveText('');
+      await expect(page.locator('#email')).toHaveText('');
+      await expect(page.locator('#password')).toHaveText('');
+      await expect(page.locator('#error-message')).toHaveAttribute('class','hidden success');
     // Создай test.step ПРЕДУСЛОВИЯ: Проверить начальное состояние формы
     // В рамках шага выполни проверки
     // Что проверяем:
     // - Все поля формы пустые
     // - Сообщения об ошибке и успехе скрыты
     // - Секция профиля не отображается
+    )};
+    )};
 
     test.step();
 
     // Создай test.step ШАГ 1: Попытка регистрации с пустыми полями
+    test.step('ШАГ 1: Попытка регистрации с пустыми полями', async ()=>{
+    await page.locator('#register-btn').click();
+    await expect(page.locator('#error-message')).toHaveAttribute('class','error');
+    await expect(page.locator('#success-message')).toHaveAttribute('class','hidden success')
+
+    
     // В рамках шага выполни проверки
     // Что выполняем:
     // - Нажимаем кнопку без заполнения полей
     // Что проверяем:
     // - Появилось сообщение о необходимости заполнить все поля
     // - Сообщение об успехе осталось скрытым
-
-    test.step();
-
+      )};
+    
+    test.step('ШАГ 1: Попытка регистрации с пустыми полями', async ()=>{
+      await page.locator('#username')).fill('name');
+      await page.locator('#email')).fill('dasda');
+      await page.locator('#password').fill('123');
+      await expect(page.locator('#error-message')).toHaveAttribute('class','error')
     // Создай test.step ШАГ 2: Попытка регистрации с некорректными данными
     // В рамках шага выполни проверки
     // Что выполняем:
@@ -41,7 +59,7 @@ test.describe('Тестирование формы регистрации', () =
     // Что проверяем:
     // - Соответствующие сообщения об ошибках
 
-    test.step();
+    test.step('ШАГ 1: Попытка регистрации с пустыми полями', async ()=>{
 
     // Создай test.step ШАГ 3: Успешная регистрация
     // В рамках шага выполни проверки
